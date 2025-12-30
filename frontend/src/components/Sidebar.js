@@ -1,18 +1,18 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
-  Building2, LayoutDashboard, FileText, Settings, 
-  LogOut, User, ChevronDown
+  LayoutDashboard, FileText, Settings, 
+  LogOut, User, ChevronDown, Users
 } from 'lucide-react';
 import { useState } from 'react';
 
-const LOGO_URL = "https://customer-assets.emergentagent.com/job_9070e371-71fc-4a23-b411-e6a30412bc7d/artifacts/04io5yv7_blum-logo.svg";
+const BLUM_LOGO = "https://customer-assets.emergentagent.com/job_9070e371-71fc-4a23-b411-e6a30412bc7d/artifacts/04io5yv7_blum-logo.svg";
 
 const navItems = [
   { path: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
   { path: '/deals', label: 'Deals', icon: FileText },
-  { path: '/templates', label: 'Templates', icon: FileText },
-  { path: '/settings', label: 'Einstellungen', icon: Settings },
+  { path: '/templates', label: 'Templates', icon: FileText, adminOnly: true },
+  { path: '/users', label: 'Benutzer', icon: Users, adminOnly: true },
 ];
 
 export default function Sidebar() {
@@ -30,25 +30,12 @@ export default function Sidebar() {
     <aside className="hidden lg:flex flex-col w-64 bg-white border-r border-slate-200 h-screen sticky top-0">
       {/* Logo */}
       <div className="p-6 border-b border-slate-100">
-        <Link to="/dashboard" className="flex items-center gap-3">
+        <Link to="/dashboard" className="flex items-center justify-center">
           <img 
-            src={LOGO_URL} 
-            alt="Blum Logo" 
-            className="h-10 w-auto"
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = '';
-              e.target.style.display = 'none';
-              e.target.nextSibling.style.display = 'flex';
-            }}
+            src={BLUM_LOGO} 
+            alt="Blum Verwaltungs- und Treuhand AG" 
+            className="h-12 w-auto"
           />
-          <div className="w-10 h-10 bg-bronze rounded-sm items-center justify-center hidden">
-            <Building2 className="w-6 h-6 text-white" />
-          </div>
-          <div>
-            <h1 className="font-heading text-lg font-semibold text-slate-900 tracking-tight">Blum</h1>
-            <p className="text-xs text-slate-500">Treuhand AG</p>
-          </div>
         </Link>
       </div>
 
@@ -59,8 +46,8 @@ export default function Sidebar() {
           const isActive = location.pathname === item.path || 
             (item.path === '/deals' && location.pathname.startsWith('/deals'));
           
-          // Only show settings to admin
-          if (item.path === '/settings' && !isAdmin) return null;
+          // Only show admin items to admin
+          if (item.adminOnly && !isAdmin) return null;
           
           return (
             <Link
