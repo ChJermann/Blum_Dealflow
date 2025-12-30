@@ -1,0 +1,159 @@
+{
+  "identity": {
+    "persona": "E1: The Anti-AI Designer",
+    "philosophy": "Swiss Precision meets Luxury Fintech. We build 'The Alpine Vault' - secure, pristine, elevated.",
+    "principles": [
+      "Fusion: Swiss Graphic Design (Grids, Typography) + Luxury Hospitality (Warmth, Service).",
+      "Emotion: Trust, Clarity, Exclusivity.",
+      "Content: Data is the hero. Use whitespace to frame it.",
+      "Detail: 1px borders, subtle golden shadows, perfect alignment."
+    ]
+  },
+  "design_system": {
+    "typography": {
+      "headings": {
+        "font_family": "Playfair Display, serif",
+        "weights": ["600", "700"],
+        "usage": "Page titles, Section headers, Deal names. Use tracking-tight."
+      },
+      "body": {
+        "font_family": "Manrope, sans-serif",
+        "weights": ["400", "500", "600"],
+        "usage": "UI elements, data tables, form labels. Use tracking-normal."
+      },
+      "mono": {
+        "font_family": "JetBrains Mono, monospace",
+        "usage": "Deal IDs, Financial figures, Dates."
+      }
+    },
+    "colors": {
+      "primary": {
+        "DEFAULT": "#AC7E49",
+        "foreground": "#FFFFFF",
+        "hover": "#9C703F",
+        "description": "Golden Bronze - The brand signature. Use for Primary Actions (Save, Create), Active States, and Key Accents."
+      },
+      "secondary": {
+        "DEFAULT": "#1A202C",
+        "foreground": "#FFFFFF",
+        "description": "Deep Slate - Used for high-contrast headers and secondary buttons."
+      },
+      "background": {
+        "DEFAULT": "#F8F9FA",
+        "paper": "#FFFFFF",
+        "description": "Off-white 'Snow' background for the app. Pure white for cards."
+      },
+      "muted": {
+        "DEFAULT": "#F1F5F9",
+        "foreground": "#64748B",
+        "description": "Light grey for secondary backgrounds and muted text."
+      },
+      "border": {
+        "DEFAULT": "#E2E8F0",
+        "active": "#AC7E49"
+      },
+      "status": {
+        "success": "#2F855A",
+        "warning": "#DD6B20",
+        "error": "#C53030",
+        "info": "#2B6CB0"
+      }
+    },
+    "spacing": {
+      "container_padding": "p-8 md:p-12 lg:p-16",
+      "card_padding": "p-6 or p-8",
+      "section_gap": "gap-8 or gap-12"
+    },
+    "radius": {
+      "default": "rounded-sm",
+      "button": "rounded-sm",
+      "card": "rounded-md"
+    },
+    "shadows": {
+      "card": "shadow-[0_2px_8px_rgba(0,0,0,0.04)]",
+      "hover": "shadow-[0_8px_24px_rgba(172,126,73,0.15)]",
+      "dropdown": "shadow-xl border border-slate-100"
+    }
+  },
+  "components": {
+    "buttons": {
+      "primary": "bg-[#AC7E49] hover:bg-[#9C703F] text-white rounded-sm font-medium px-6 py-2.5 transition-all duration-200 shadow-sm hover:shadow-md",
+      "secondary": "bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 rounded-sm font-medium px-6 py-2.5 transition-all",
+      "ghost": "text-slate-600 hover:text-[#AC7E49] hover:bg-[#AC7E49]/10 rounded-sm px-4 py-2"
+    },
+    "cards": {
+      "style": "bg-white border border-slate-100 rounded-md shadow-[0_2px_8px_rgba(0,0,0,0.04)] hover:shadow-[0_8px_24px_rgba(172,126,73,0.15)] transition-all duration-300 hover:-translate-y-1",
+      "header": "border-b border-slate-50 p-6",
+      "content": "p-6"
+    },
+    "inputs": {
+      "style": "bg-white border-slate-200 focus:border-[#AC7E49] focus:ring-1 focus:ring-[#AC7E49] rounded-sm h-10"
+    },
+    "badges": {
+      "style": "rounded-full px-2.5 py-0.5 text-xs font-semibold tracking-wide uppercase",
+      "variants": {
+        "default": "bg-slate-100 text-slate-700",
+        "bronze": "bg-[#AC7E49]/10 text-[#AC7E49] border border-[#AC7E49]/20"
+      }
+    }
+  },
+  "layout_strategies": {
+    "dashboard": {
+      "type": "Bento Grid",
+      "grid_cols": "grid-cols-1 md:grid-cols-12",
+      "gap": "gap-6",
+      "widgets": {
+        "hero": "col-span-full md:col-span-8 row-span-2 (Welcome + Key Stats)",
+        "quick_actions": "col-span-full md:col-span-4 row-span-1 (New Deal, Upload)",
+        "recent_deals": "col-span-full md:col-span-4 row-span-2 (List)",
+        "notifications": "col-span-full md:col-span-4 row-span-1"
+      }
+    },
+    "deal_wizard": {
+      "type": "Split Screen",
+      "left_panel": "w-full md:w-2/3 p-8 (Form Steps)",
+      "right_panel": "hidden md:block md:w-1/3 bg-slate-50 border-l border-slate-200 p-8 (Live Summary/Preview)"
+    }
+  },
+  "assets": {
+    "images": {
+      "login_background": {
+        "url": "https://images.unsplash.com/photo-1752999050353-6386a060b771?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwyfHxzd2lzcyUyMGFscHMlMjBtb3VudGFpbnMlMjBsYW5kc2NhcGUlMjBtaW5pbWFsaXN0fGVufDB8fHx8MTc2NzA4NTgwMHww&ixlib=rb-4.1.0&q=85",
+        "alt": "Swiss Alps Landscape",
+        "usage": "Full screen background for Login/Signup with parallax effect."
+      },
+      "texture_overlay": {
+        "url": "https://images.unsplash.com/photo-1638888077595-039e77b1dc70?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzB8MHwxfHNlYXJjaHwyfHxhYnN0cmFjdCUyMGdvbGRlbiUyMGJyb256ZSUyMHRleHR1cmUlMjBsdXh1cnklMjBiYWNrZ3JvdW5kfGVufDB8fHx8MTc2NzA4NTgwMnww&ixlib=rb-4.1.0&q=85",
+        "alt": "Bronze Texture",
+        "usage": "Subtle overlay opacity-5 on the sidebar or active card borders."
+      },
+      "office_placeholder": {
+        "url": "https://images.unsplash.com/photo-1765371512336-99c2b1c6975f?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NDQ2NDF8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBtaW5pbWFsaXN0JTIwd2hpdGUlMjBvZmZpY2UlMjBpbnRlcmlvciUyMGFyY2hpdGVjdHVyZXxlbnwwfHx8fDE3NjcwODU4MDV8MA&ixlib=rb-4.1.0&q=85",
+        "alt": "Modern Office",
+        "usage": "Empty state for 'Company Profile' or 'About' section."
+      }
+    },
+    "icons": "Use 'lucide-react' for all UI icons. Use thin stroke-width (1.5px) for elegance."
+  },
+  "motion": {
+    "parallax": "Use CSS 'background-attachment: fixed' for the login page background to create a simple, performant parallax effect.",
+    "transitions": "All interactive elements must have 'transition-all duration-200 ease-in-out'.",
+    "hover_lift": "hover:-translate-y-1 hover:shadow-lg"
+  },
+  "instructions_to_main_agent": [
+    "1. SETUP: Install 'lucide-react' and 'clsx' 'tailwind-merge' if not present.",
+    "2. THEME: Update 'tailwind.config.js' with the colors defined in 'design_system.colors'.",
+    "3. FONTS: Import 'Playfair Display' and 'Manrope' from Google Fonts in 'index.css'.",
+    "4. LAYOUT: Build the 'Dashboard' using the Bento Grid strategy defined above.",
+    "5. LANGUAGE: All UI text must be in GERMAN (DE).",
+    "6. CHATBOT: Implement as a floating button (bottom-right) with the Primary Bronze color.",
+    "7. PARALLAX: Implement the Login page with the Swiss Alps image as a fixed background.",
+    "8. DATA-TESTID: Add 'data-testid' to all buttons, inputs, and cards."
+  ],
+  "universal_guidelines": [
+    "Avoid gradients for backgrounds; use solid colors or subtle textures.",
+    "Do not center-align text in cards; left-align for readability.",
+    "Use 2x more padding than you think is necessary.",
+    "Never use pure black (#000000); use Slate-900 (#1A202C)."
+  ]
+}
