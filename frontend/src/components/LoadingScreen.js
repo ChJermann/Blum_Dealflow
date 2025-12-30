@@ -5,45 +5,40 @@ export default function LoadingScreen({ onComplete }) {
   const [status, setStatus] = useState('Initialisiere...');
 
   useEffect(() => {
-    const statuses = [
-      { at: 0, text: 'Initialisiere...' },
-      { at: 15, text: 'Verbinde mit LIVAG Servern...' },
-      { at: 35, text: 'Lade Benutzerdaten...' },
-      { at: 60, text: 'Synchronisiere Deals...' },
-      { at: 85, text: 'Abschliessen...' },
+    // Predefined jump points with delays (total ~4 seconds)
+    const steps = [
+      { progress: 12, status: 'Initialisiere...', delay: 300 },
+      { progress: 28, status: 'Verbinde mit LIVAG Servern...', delay: 600 },
+      { progress: 35, status: 'Verbinde mit LIVAG Servern...', delay: 400 },
+      { progress: 52, status: 'Lade Benutzerdaten...', delay: 500 },
+      { progress: 58, status: 'Lade Benutzerdaten...', delay: 350 },
+      { progress: 71, status: 'Synchronisiere Deals...', delay: 450 },
+      { progress: 79, status: 'Synchronisiere Deals...', delay: 400 },
+      { progress: 84, status: 'Synchronisiere Deals...', delay: 300 },
+      { progress: 93, status: 'Abschliessen...', delay: 400 },
+      { progress: 100, status: 'Abschliessen...', delay: 300 },
     ];
 
-    // Total duration: 4 seconds = 4000ms
-    // We'll update every 50ms, so 80 updates total
-    // Each update adds ~1.25% progress
-    const totalDuration = 4000;
-    const updateInterval = 50;
-    const totalUpdates = totalDuration / updateInterval;
-    const progressPerUpdate = 100 / totalUpdates;
+    let currentStep = 0;
 
-    const interval = setInterval(() => {
-      setProgress(prev => {
-        if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => onComplete(), 200);
-          return 100;
-        }
-        
-        const newProgress = Math.min(prev + progressPerUpdate, 100);
-        
-        // Update status text
-        for (let i = statuses.length - 1; i >= 0; i--) {
-          if (newProgress >= statuses[i].at) {
-            setStatus(statuses[i].text);
-            break;
-          }
-        }
-        
-        return newProgress;
-      });
-    }, updateInterval);
+    const runStep = () => {
+      if (currentStep >= steps.length) {
+        setTimeout(() => onComplete(), 200);
+        return;
+      }
 
-    return () => clearInterval(interval);
+      const step = steps[currentStep];
+      setProgress(step.progress);
+      setStatus(step.status);
+      currentStep++;
+
+      setTimeout(runStep, step.delay);
+    };
+
+    // Start after a brief initial delay
+    setTimeout(runStep, 200);
+
+    return () => {};
   }, [onComplete]);
 
   return (
@@ -70,8 +65,8 @@ export default function LoadingScreen({ onComplete }) {
       <div className="w-96">
         <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-bronze to-[#C9A066] transition-all duration-50 ease-linear"
-            style={{ width: `${progress}%` }}
+            className="h-full bg-gradient-to-r from-bronze to-[#C9A066]"
+            style={{ width: `${progress}%`, transition: 'width 0.15s ease-out' }}
           />
         </div>
         <div className="flex justify-between mt-3">
