@@ -273,6 +273,7 @@ export default function UsersPage() {
       </main>
 
       <ChatbotWidget />
+      <ServerStatus />
     </div>
   );
 }
