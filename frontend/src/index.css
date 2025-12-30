@@ -218,3 +218,13 @@ h1, h2, h3, h4, h5, h6, .font-heading {
         display: contents !important;
     }
 }
+
+/* Hide external badges */
+[data-testid="emergent-badge"],
+.emergent-badge,
+div[class*="emergent"],
+a[href*="emergentagent.com"]:not(img) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+}
