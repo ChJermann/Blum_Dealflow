@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import axios from 'axios';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -16,29 +16,42 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem('blum_token'));
+  const [token, setToken] = useState(() => localStorage.getItem('blum_token'));
   const [loading, setLoading] = useState(true);
+  const initializedRef = useRef(false);
 
-  useEffect(() => {
-    if (token) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      fetchUser();
-    } else {
+  const fetchUser = useCallback(async () => {
+    const storedToken = localStorage.getItem('blum_token');
+    if (!storedToken) {
       setLoading(false);
+      return;
     }
-  }, [token]);
-
-  const fetchUser = async () => {
+    
     try {
+      axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
       const response = await axios.get(`${API}/auth/me`);
       setUser(response.data);
+      setToken(storedToken);
     } catch (error) {
       console.error('Failed to fetch user:', error);
-      logout();
+      // Only logout if it's an auth error
+      if (error.response?.status === 401) {
+        localStorage.removeItem('blum_token');
+        delete axios.defaults.headers.common['Authorization'];
+        setToken(null);
+        setUser(null);
+      }
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    if (!initializedRef.current) {
+      initializedRef.current = true;
+      fetchUser();
+    }
+  }, [fetchUser]);
 
   const login = async (email, password) => {
     const response = await axios.post(`${API}/auth/login`, { email, password });
