@@ -71,7 +71,8 @@ export default function ChatbotWidget({ dealId = null }) {
       {/* Chat Button */}
       <button
         onClick={() => setIsOpen(true)}
-        className={`fixed bottom-6 right-6 w-14 h-14 bg-bronze hover:bg-bronze-hover text-white rounded-full shadow-bronze flex items-center justify-center transition-all hover:scale-105 z-50 ${isOpen ? 'hidden' : ''}`}
+        className={`fixed bottom-6 right-6 w-14 h-14 bg-bronze hover:bg-bronze-hover text-white rounded-full shadow-bronze flex items-center justify-center transition-all hover:scale-105 ${isOpen ? 'hidden' : ''}`}
+        style={{ zIndex: 9999 }}
         data-testid="chatbot-open-btn"
       >
         <MessageCircle className="w-6 h-6" />
@@ -80,7 +81,8 @@ export default function ChatbotWidget({ dealId = null }) {
       {/* Chat Window */}
       {isOpen && (
         <div 
-          className="fixed bottom-6 right-6 w-96 h-[500px] bg-white rounded-lg shadow-2xl border border-slate-200 flex flex-col z-50 animate-scale-in"
+          className="fixed bottom-6 right-6 w-96 h-[500px] bg-white rounded-lg shadow-2xl border border-slate-200 flex flex-col animate-scale-in"
+          style={{ zIndex: 9999 }}
           data-testid="chatbot-window"
         >
           {/* Header */}
