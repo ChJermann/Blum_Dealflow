@@ -1,22 +1,21 @@
 import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
-import { AlertCircle, Eye, EyeOff, Building2 } from 'lucide-react';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 
 const LOGIN_BG = "https://images.unsplash.com/photo-1752999050353-6386a060b771?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwyfHxzd2lzcyUyMGFscHMlMjBtb3VudGFpbnMlMjBsYW5kc2NhcGUlMjBtaW5pbWFsaXN0fGVufDB8fHx8MTc2NzA4NTgwMHww&ixlib=rb-4.1.0&q=85";
+const BLUM_LOGO = "https://customer-assets.emergentagent.com/job_9070e371-71fc-4a23-b411-e6a30412bc7d/artifacts/04io5yv7_blum-logo.svg";
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { login, register } = useAuth();
+  const { login } = useAuth();
   
-  const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [name, setName] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,14 +26,10 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      if (isLogin) {
-        await login(email, password);
-      } else {
-        await register(email, password, name, 'admin');
-      }
+      await login(email, password);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.detail || 'Ein Fehler ist aufgetreten');
+      setError(err.response?.data?.detail || 'Ungültige Anmeldedaten');
     } finally {
       setLoading(false);
     }
@@ -49,14 +44,12 @@ export default function LoginPage() {
       >
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-slate-900/40" />
         <div className="relative z-10 flex flex-col justify-center p-12 xl:p-20">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 bg-bronze rounded-sm flex items-center justify-center">
-              <Building2 className="w-7 h-7 text-white" />
-            </div>
-            <div>
-              <h1 className="font-heading text-3xl text-white font-semibold tracking-tight">Blum</h1>
-              <p className="text-white/70 text-sm">Verwaltungs- und Treuhand AG</p>
-            </div>
+          <div className="flex items-center gap-4 mb-8">
+            <img 
+              src={BLUM_LOGO} 
+              alt="Blum Verwaltungs- und Treuhand AG" 
+              className="h-16 w-auto"
+            />
           </div>
           
           <h2 className="font-heading text-4xl xl:text-5xl text-white font-bold mb-6 leading-tight">
@@ -89,45 +82,25 @@ export default function LoginPage() {
       <div className="w-full lg:w-1/2 xl:w-1/3 flex items-center justify-center p-8 bg-snow">
         <div className="w-full max-w-md">
           {/* Mobile Logo */}
-          <div className="lg:hidden flex items-center gap-3 mb-8 justify-center">
-            <div className="w-10 h-10 bg-bronze rounded-sm flex items-center justify-center">
-              <Building2 className="w-6 h-6 text-white" />
-            </div>
-            <div>
-              <h1 className="font-heading text-2xl text-slate-900 font-semibold tracking-tight">Blum</h1>
-            </div>
+          <div className="lg:hidden flex items-center justify-center mb-8">
+            <img 
+              src={BLUM_LOGO} 
+              alt="Blum Verwaltungs- und Treuhand AG" 
+              className="h-12 w-auto"
+            />
           </div>
 
           <Card className="border-0 shadow-card-hover animate-fade-in" data-testid="login-card">
             <CardHeader className="space-y-1 pb-6">
               <CardTitle className="text-2xl font-heading font-semibold text-slate-900">
-                {isLogin ? 'Willkommen zurück' : 'Konto erstellen'}
+                Willkommen
               </CardTitle>
               <CardDescription className="text-slate-500">
-                {isLogin 
-                  ? 'Melden Sie sich an, um fortzufahren' 
-                  : 'Erstellen Sie ein neues Administratorkonto'
-                }
+                Melden Sie sich an, um fortzufahren
               </CardDescription>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleSubmit} className="space-y-4">
-                {!isLogin && (
-                  <div className="space-y-2">
-                    <Label htmlFor="name" className="text-slate-700">Name</Label>
-                    <Input
-                      id="name"
-                      type="text"
-                      placeholder="Max Mustermann"
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required={!isLogin}
-                      className="input-premium h-11"
-                      data-testid="register-name-input"
-                    />
-                  </div>
-                )}
-                
                 <div className="space-y-2">
                   <Label htmlFor="email" className="text-slate-700">E-Mail</Label>
                   <Input
@@ -184,27 +157,10 @@ export default function LoginPage() {
                       Bitte warten...
                     </span>
                   ) : (
-                    isLogin ? 'Anmelden' : 'Registrieren'
+                    'Anmelden'
                   )}
                 </Button>
               </form>
-
-              <div className="mt-6 text-center">
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsLogin(!isLogin);
-                    setError('');
-                  }}
-                  className="text-sm text-slate-500 hover:text-bronze transition-colors"
-                  data-testid="toggle-auth-mode"
-                >
-                  {isLogin 
-                    ? 'Noch kein Konto? Jetzt registrieren' 
-                    : 'Bereits registriert? Jetzt anmelden'
-                  }
-                </button>
-              </div>
             </CardContent>
           </Card>
 
