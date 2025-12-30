@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import DealWizard from "./pages/DealWizard";
 import DealDetail from "./pages/DealDetail";
+import UsersPage from "./pages/UsersPage";
 
 // Protected Route Component
 const ProtectedRoute = ({ children }) => {
@@ -126,6 +127,15 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        } 
+      />
+      
+      <Route 
+        path="/users" 
+        element={
+          <ProtectedRoute>
+            <UsersPage />
           </ProtectedRoute>
         } 
       />
