@@ -21,6 +21,7 @@ export default function LoginPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [showLoadingScreen, setShowLoadingScreen] = useState(false);
+  const [pendingCredentials, setPendingCredentials] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -28,18 +29,35 @@ export default function LoginPage() {
     setLoading(true);
 
     try {
-      await login(email, password);
-      // Always show loading screen after successful login
+      // First validate credentials without storing token
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+      
+      if (!response.ok) {
+        const data = await response.json();
+        throw new Error(data.detail || 'Ungültige Anmeldedaten');
+      }
+      
+      const data = await response.json();
+      // Store credentials for after loading screen
+      setPendingCredentials(data);
       setLoading(false);
       setShowLoadingScreen(true);
     } catch (err) {
-      setError(err.response?.data?.detail || 'Ungültige Anmeldedaten');
+      setError(err.message || 'Ungültige Anmeldedaten');
       setLoading(false);
     }
   };
 
-  const handleLoadingComplete = () => {
-    navigate('/dashboard');
+  const handleLoadingComplete = async () => {
+    if (pendingCredentials) {
+      // Now actually complete the login
+      localStorage.setItem('blum_token', pendingCredentials.access_token);
+      window.location.href = '/dashboard';
+    }
   };
 
   if (showLoadingScreen) {
