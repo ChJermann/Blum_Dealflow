@@ -667,6 +667,7 @@ export default function DealDetail() {
       </main>
 
       <ChatbotWidget dealId={id} />
+      <ServerStatus />
     </div>
   );
 }
