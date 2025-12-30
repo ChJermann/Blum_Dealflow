@@ -316,6 +316,59 @@ async def get_me(current_user: dict = Depends(get_current_user)):
         created_at=current_user["created_at"]
     )
 
+# ==================== USER MANAGEMENT ROUTES (Admin only) ====================
+
+@api_router.get("/users", response_model=List[UserResponse])
+async def get_users(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Nur Administratoren können Benutzer verwalten")
+    
+    users = await db.users.find({}, {"_id": 0, "password": 0}).to_list(100)
+    return [UserResponse(**u) for u in users]
+
+@api_router.post("/users", response_model=UserResponse)
+async def create_user(user: UserCreate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Nur Administratoren können Benutzer erstellen")
+    
+    existing = await db.users.find_one({"email": user.email})
+    if existing:
+        raise HTTPException(status_code=400, detail="E-Mail bereits registriert")
+    
+    user_id = str(uuid.uuid4())
+    user_doc = {
+        "id": user_id,
+        "email": user.email,
+        "password": hash_password(user.password),
+        "name": user.name,
+        "role": user.role,
+        "created_at": datetime.now(timezone.utc).isoformat()
+    }
+    
+    await db.users.insert_one(user_doc)
+    
+    return UserResponse(
+        id=user_id,
+        email=user.email,
+        name=user.name,
+        role=user.role,
+        created_at=user_doc["created_at"]
+    )
+
+@api_router.delete("/users/{user_id}")
+async def delete_user(user_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "admin":
+        raise HTTPException(status_code=403, detail="Nur Administratoren können Benutzer löschen")
+    
+    if user_id == current_user["id"]:
+        raise HTTPException(status_code=400, detail="Sie können sich nicht selbst löschen")
+    
+    result = await db.users.delete_one({"id": user_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Benutzer nicht gefunden")
+    
+    return {"message": "Benutzer gelöscht"}
+
 # ==================== DEAL ROUTES ====================
 
 @api_router.post("/deals", response_model=DealResponse)
