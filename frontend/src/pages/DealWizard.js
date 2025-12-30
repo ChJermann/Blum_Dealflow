@@ -1107,6 +1107,7 @@ export default function DealWizard() {
       </main>
 
       <ChatbotWidget />
+      <ServerStatus />
     </div>
   );
 }
