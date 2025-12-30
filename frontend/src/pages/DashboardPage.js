@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import ChatbotWidget from '../components/ChatbotWidget';
+import ServerStatus from '../components/ServerStatus';
 
 const STATUS_LABELS = {
   entwurf: 'Entwurf',
@@ -383,6 +384,7 @@ export default function DashboardPage() {
       </main>
 
       <ChatbotWidget />
+      <ServerStatus />
     </div>
   );
 }
