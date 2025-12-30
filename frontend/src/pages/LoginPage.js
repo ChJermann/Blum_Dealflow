@@ -6,6 +6,7 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import LoadingScreen from '../components/LoadingScreen';
 
 const LOGIN_BG = "https://images.unsplash.com/photo-1752999050353-6386a060b771?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2NzR8MHwxfHNlYXJjaHwyfHxzd2lzcyUyMGFscHMlMjBtb3VudGFpbnMlMjBsYW5kc2NhcGUlMjBtaW5pbWFsaXN0fGVufDB8fHx8MTc2NzA4NTgwMHww&ixlib=rb-4.1.0&q=85";
 const BLUM_LOGO = "https://customer-assets.emergentagent.com/job_9070e371-71fc-4a23-b411-e6a30412bc7d/artifacts/04io5yv7_blum-logo.svg";
@@ -19,6 +20,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showLoadingScreen, setShowLoadingScreen] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,13 +29,20 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      navigate('/dashboard');
+      setShowLoadingScreen(true);
     } catch (err) {
       setError(err.response?.data?.detail || 'Ungültige Anmeldedaten');
-    } finally {
       setLoading(false);
     }
   };
+
+  const handleLoadingComplete = () => {
+    navigate('/dashboard');
+  };
+
+  if (showLoadingScreen) {
+    return <LoadingScreen onComplete={handleLoadingComplete} />;
+  }
 
   return (
     <div className="min-h-screen flex">
