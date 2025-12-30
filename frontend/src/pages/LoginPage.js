@@ -29,6 +29,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
+      // Always show loading screen after successful login
+      setLoading(false);
       setShowLoadingScreen(true);
     } catch (err) {
       setError(err.response?.data?.detail || 'Ungültige Anmeldedaten');
