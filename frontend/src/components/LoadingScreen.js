@@ -7,22 +7,29 @@ export default function LoadingScreen({ onComplete }) {
   useEffect(() => {
     const statuses = [
       { at: 0, text: 'Initialisiere...' },
-      { at: 20, text: 'Verbinde mit LIVAG Servern...' },
-      { at: 45, text: 'Lade Benutzerdaten...' },
-      { at: 70, text: 'Synchronisiere Deals...' },
-      { at: 90, text: 'Abschliessen...' },
+      { at: 15, text: 'Verbinde mit LIVAG Servern...' },
+      { at: 35, text: 'Lade Benutzerdaten...' },
+      { at: 60, text: 'Synchronisiere Deals...' },
+      { at: 85, text: 'Abschliessen...' },
     ];
+
+    // Total duration: 4 seconds = 4000ms
+    // We'll update every 50ms, so 80 updates total
+    // Each update adds ~1.25% progress
+    const totalDuration = 4000;
+    const updateInterval = 50;
+    const totalUpdates = totalDuration / updateInterval;
+    const progressPerUpdate = 100 / totalUpdates;
 
     const interval = setInterval(() => {
       setProgress(prev => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => onComplete(), 500);
+          setTimeout(() => onComplete(), 200);
           return 100;
         }
-        // Slower progress for better visibility
-        const increment = prev < 50 ? Math.random() * 8 + 2 : Math.random() * 4 + 1;
-        const newProgress = Math.min(prev + increment, 100);
+        
+        const newProgress = Math.min(prev + progressPerUpdate, 100);
         
         // Update status text
         for (let i = statuses.length - 1; i >= 0; i--) {
@@ -34,7 +41,7 @@ export default function LoadingScreen({ onComplete }) {
         
         return newProgress;
       });
-    }, 150);
+    }, updateInterval);
 
     return () => clearInterval(interval);
   }, [onComplete]);
@@ -63,7 +70,7 @@ export default function LoadingScreen({ onComplete }) {
       <div className="w-96">
         <div className="h-1.5 bg-slate-700 rounded-full overflow-hidden">
           <div 
-            className="h-full bg-gradient-to-r from-bronze to-[#C9A066] transition-all duration-150 ease-out"
+            className="h-full bg-gradient-to-r from-bronze to-[#C9A066] transition-all duration-50 ease-linear"
             style={{ width: `${progress}%` }}
           />
         </div>
