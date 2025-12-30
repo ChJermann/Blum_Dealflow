@@ -515,7 +515,7 @@ def replace_placeholders(text: str, deal: dict) -> str:
     
     # Build buyer list
     buyers = deal.get("buyers", [])
-    buyer_list = "\n".join([f"- {b.get('name', '')} ({b.get('ort', '')})" for s in buyers])
+    buyer_list = "\n".join([f"- {b.get('name', '')} ({b.get('ort', '')})" for b in buyers])
     replacements["{{buyer.list}}"] = buyer_list or "–"
     
     # Build VR list
@@ -538,7 +538,7 @@ def generate_docx(deal: dict, template: dict) -> io.BytesIO:
     header_para.text = "Blum Verwaltungs- und Treuhand AG"
     
     # Add title
-    title = doc.add_heading(template.get("name", "Dokument"), level=1)
+    doc.add_heading(template.get("name", "Dokument"), level=1)
     
     # Add deal info
     doc.add_paragraph(f"Deal-Nummer: {deal.get('deal_number', '')}")
@@ -918,32 +918,32 @@ async def seed_default_templates():
 # ==================== DEAL VALIDATION ====================
 
 @api_router.get("/deals/{deal_id}/validate")
-async def validate_deal(deal_id: str, current_user: dict = Depends(get_current_user)):
+async def validate_deal_endpoint(deal_id: str, current_user: dict = Depends(get_current_user)):
     deal = await db.deals.find_one({"id": deal_id}, {"_id": 0})
     if not deal:
         raise HTTPException(status_code=404, detail="Deal nicht gefunden")
     
-    errors = []
+    validation_errors = []
     warnings = []
     
     # Check required fields
     if not deal.get("deal_type"):
-        errors.append({"field": "deal_type", "message": "Deal-Typ erforderlich"})
+        validation_errors.append({"field": "deal_type", "message": "Deal-Typ erforderlich"})
     
     company = deal.get("company", {})
     if not company.get("name_current"):
-        errors.append({"field": "company.name_current", "message": "Firmenname erforderlich"})
+        validation_errors.append({"field": "company.name_current", "message": "Firmenname erforderlich"})
     
     sellers = deal.get("sellers", [])
     if not sellers:
-        errors.append({"field": "sellers", "message": "Mindestens ein Verkäufer erforderlich"})
+        validation_errors.append({"field": "sellers", "message": "Mindestens ein Verkäufer erforderlich"})
     
     buyers = deal.get("buyers", [])
     if not buyers:
-        errors.append({"field": "buyers", "message": "Mindestens ein Käufer erforderlich"})
+        validation_errors.append({"field": "buyers", "message": "Mindestens ein Käufer erforderlich"})
     
     if not deal.get("kaufpreis") and not deal.get("kaufpreis_regelung"):
-        errors.append({"field": "kaufpreis", "message": "Kaufpreis oder Kaufpreis-Regelung erforderlich"})
+        validation_errors.append({"field": "kaufpreis", "message": "Kaufpreis oder Kaufpreis-Regelung erforderlich"})
     
     if not deal.get("besitzantritt"):
         warnings.append({"field": "besitzantritt", "message": "Besitzantritt nicht definiert"})
@@ -963,8 +963,8 @@ async def validate_deal(deal_id: str, current_user: dict = Depends(get_current_u
         warnings.append({"field": "signatures", "message": "Keine Unterschriften konfiguriert"})
     
     return {
-        "valid": len(errors) == 0,
-        "errors": errors,
+        "valid": len(validation_errors) == 0,
+        "errors": validation_errors,
         "warnings": warnings
     }
 
