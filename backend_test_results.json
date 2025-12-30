@@ -1,0 +1,93 @@
+{
+  "timestamp": "2025-12-30T09:23:03.329612",
+  "base_url": "https://blum-docs.preview.emergentagent.com",
+  "total_tests": 14,
+  "passed_tests": 13,
+  "success_rate": 92.85714285714286,
+  "test_details": [
+    {
+      "test": "User Registration",
+      "success": true,
+      "details": "User created with ID: b420e6a5-cfb9-4134-a4ca-72241c3a1c5b",
+      "error": ""
+    },
+    {
+      "test": "User Login",
+      "success": true,
+      "details": "Login successful",
+      "error": ""
+    },
+    {
+      "test": "Get Current User",
+      "success": true,
+      "details": "User data retrieved: test_092257@blum.ch",
+      "error": ""
+    },
+    {
+      "test": "Unauthorized Access Protection",
+      "success": false,
+      "details": "",
+      "error": "Protected route accessible without authentication"
+    },
+    {
+      "test": "Get Stats",
+      "success": true,
+      "details": "Stats retrieved: 0 total deals",
+      "error": ""
+    },
+    {
+      "test": "Get Templates",
+      "success": true,
+      "details": "Retrieved 6 templates",
+      "error": ""
+    },
+    {
+      "test": "Get Deals",
+      "success": true,
+      "details": "Retrieved 0 deals",
+      "error": ""
+    },
+    {
+      "test": "Create Deal",
+      "success": true,
+      "details": "Deal created: 2025-001 (ID: ac91b62b-bbc1-426d-9221-4203e2aa9397)",
+      "error": ""
+    },
+    {
+      "test": "Get Deal by ID",
+      "success": true,
+      "details": "Deal retrieved: 2025-001",
+      "error": ""
+    },
+    {
+      "test": "Update Deal Status",
+      "success": true,
+      "details": "Status updated to 'in_pruefung'",
+      "error": ""
+    },
+    {
+      "test": "Validate Deal",
+      "success": true,
+      "details": "Validation result: Valid",
+      "error": ""
+    },
+    {
+      "test": "Get Deal Documents",
+      "success": true,
+      "details": "Retrieved 0 documents",
+      "error": ""
+    },
+    {
+      "test": "Generate Document",
+      "success": true,
+      "details": "Document generated: Blum_Ankauf_2025-001_kaufvertrag_Test_AG_2025-12-30_v1.docx",
+      "error": ""
+    },
+    {
+      "test": "Chatbot",
+      "success": true,
+      "details": "Chat response received (length: 1240)",
+      "error": ""
+    }
+  ]
+}
