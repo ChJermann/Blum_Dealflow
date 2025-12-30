@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import ChatbotWidget from '../components/ChatbotWidget';
+import ServerStatus from '../components/ServerStatus';
 import { toast } from 'sonner';
 
 const STATUS_LABELS = {
