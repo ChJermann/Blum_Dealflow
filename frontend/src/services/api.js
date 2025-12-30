@@ -3,6 +3,18 @@ import axios from 'axios';
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
+// Setup axios interceptor to always include token
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('blum_token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
 // Deals API
 export const dealsApi = {
   getAll: (params = {}) => axios.get(`${API}/deals`, { params }),
